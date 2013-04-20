@@ -57,3 +57,7 @@ function Component:destroy()
 	self.gameObject.signal.remove('req_update', self:update)
 	self.gameObject.signal.remove('req_render', self:render)
 end
+
+function Component::get_component(cname)
+	return self.gameObject:get_component(cname)
+end

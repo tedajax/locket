@@ -69,7 +69,18 @@ function GameObject:has_dependencies(dependencies)
 end
 
 function GameObject:add_component(cname, ...)
-	return ComponentFactory.get():new_component(cname, self, unpack(args))
+	local comp = ComponentFactory.get():new_component(cname, self, unpack(args))
+	if self:has_dependencies(comp.dependencies) then
+		if not self.components[cname] then
+			self.components[cname] = comp
+		else
+			return nil
+		end
+	else
+		return nil
+	end
+	
+	return comp
 end
 
 function GameObject:remove_component(cname)
