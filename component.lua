@@ -1,26 +1,14 @@
 Class = require 'hump.class'
 Signal = require 'hump.signal'
-dofile 'gameobject'
-dofile 'componentfactory'
 
 Component = Class
 {
 	name = "CBase",
-	init = function(self, gameObj, bRender)
+	function(self, gameObj, bRender)
 		self.dependencies = {}
 		self.gameObject = gameObj
 		self.bEnabled = true
 		self.bRenderable = bRender
-
-		self.gameObject.signal.register('req_start', self:req_start)
-		self.gameObject.signal.register('req_update', self:req_update)
-			
-		if self.bRenderable then
-			self.gameObject.signal.register('req_render', self:req_render)
-		end
-
-		-- not sure if this will work
-		ComponentFactory.get():register(self.name, self.init)
 	end	
 }
 
@@ -53,11 +41,11 @@ function Component:render()
 end
 
 function Component:destroy()
-	self.gameObject.signal.remove('req_start', self:start)
-	self.gameObject.signal.remove('req_update', self:update)
-	self.gameObject.signal.remove('req_render', self:render)
+	
 end
 
-function Component::get_component(cname)
+function Component:get_component(cname)
 	return self.gameObject:get_component(cname)
 end
+
+ComponentFactory.get():register("CBase", function(...) return Component(unpack(arg)) end)

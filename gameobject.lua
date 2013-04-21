@@ -1,20 +1,18 @@
 Class = require 'hump.class'
 Signal = require 'hump.signal'
-dofile 'component'
-dofile 'componentfactory'
 
 GameObject = Class
 {
 	name = "GameObject",
-	init = function(self)
+	function(self)
 		self.objName = 'GameObject'
 		self.signal = Signal.new()
 		self.components = {}
 		self.bEnabled = true
 
-		Signal.register('req_start', self:req_start)
-		Signal.register('req_update', self:req_update)
-		Signal.register('req_render', self:req_render)
+		self.startFunc = Signal.register('req_start', function() self:req_start() end)
+		self.updateFunc = Signal.register('req_update', function() self:req_update() end)
+		self.renderFunc = Signal.register('req_render', function() self:req_render() end)
 	end
 }
 
@@ -69,7 +67,8 @@ function GameObject:has_dependencies(dependencies)
 end
 
 function GameObject:add_component(cname, ...)
-	local comp = ComponentFactory.get():new_component(cname, self, unpack(args))
+	local comp = ComponentFactory.get():new_component(cname, self, unpack(arg))
+	local ok, err = self:has_dependencies(comp.dependencies)
 	if self:has_dependencies(comp.dependencies) then
 		if not self.components[cname] then
 			self.components[cname] = comp
@@ -77,6 +76,7 @@ function GameObject:add_component(cname, ...)
 			return nil
 		end
 	else
+		print(err)
 		return nil
 	end
 	
@@ -103,7 +103,7 @@ function GameObject:destroy()
 		self:RemoveComponent(comp)
 	end
 
-	Signal.remove('req_start', self:req_start)
-	Signal.remove('req_update', self:req_update)
-	Signal.remove('req_render', self:req_render)
+	Signal.remove('req_start', self.startFunc)
+	Signal.remove('req_update', self.updateFunc)
+	Signal.remove('req_render', self.renderFunc)
 end

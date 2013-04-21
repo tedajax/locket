@@ -1,19 +1,15 @@
 Class = require 'hump.class'
 Signal = require 'hump.signal'
 Vector = require 'hump.vector'
-dofile 'component'
-dofile 'componentfactory'
-dofile 'gameobject'
-dofile 'cpositionable'
 
 CRenderCircle = Class
 {
 	name = "CRenderCircle",
 	inherits = { Component },
-	init = function(self, gameObj)
-		Component.init(self, gameObj, true)
+	function(self, gameObj)
+		Component.construct(self, gameObj, true)
 
-		self.dependencies = { "CPositionable" }
+		self.dependencies = { CPositionable = true }
 
 		self.radius = 16
 		self.position = nil
@@ -21,10 +17,14 @@ CRenderCircle = Class
 }
 
 function CRenderCircle:start()
-	self.position = self:get_component("CPositionable").position
+	self.positionable = self:get_component("CPositionable")
+	print(self.positionable)
+	self.position = self.positionable.position --self:get_component("CPositionable").position
 end
 
 function CRenderCircle:render()
 	love.graphics.setColor(255, 0, 0, 255)
-	love.graphics.circle(self.position.x, self.position.y, self.radius)
+	love.graphics.circle("fill", self.position.x, self.position.y, self.radius)
 end
+
+ComponentFactory.get():register("CRenderCircle", function(...) return CRenderCircle(unpack(arg)) end)
