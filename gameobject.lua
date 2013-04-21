@@ -28,7 +28,7 @@ end
 
 function GameObject:req_render()
 	if self.bEnabled then
-		self.render()
+		self:render()
 	end
 end
 
