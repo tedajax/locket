@@ -20,9 +20,9 @@ function GameObject:req_start()
 	self:start()
 end
 
-function GameObject:req_update()
+function GameObject:req_update(dt)
 	if self.bEnabled then
-		self:update()
+		self:update(dt)
 	end
 end
 
@@ -34,19 +34,19 @@ end
 
 function GameObject:start()
 	for cname, comp in pairs(self.components) do
-		comp:start()
+		comp:req_start()
 	end
 end
 
-function GameObject:update()
+function GameObject:update(dt)
 	for cname, comp in pairs(self.components) do
-		comp:update()
+		comp:req_update(dt)
 	end
 end
 
 function GameObject:render()
 	for cname, comp in pairs(self.components) do
-		comp:render()
+		comp:req_render()
 	end
 end
 

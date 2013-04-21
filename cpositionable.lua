@@ -13,4 +13,16 @@ CPositionable = Class
 	end
 }
 
+function CPositionable:get_blank_data()
+	return { position = Vector(0, 0) }
+end
+
+function CPositionable:get_data()
+	return { position = self.position }
+end
+
+function CPositionable:build(data)
+	self.position = data.position
+end
+
 ComponentFactory.get():register("CPositionable", function(...) return CPositionable(unpack(arg)) end)

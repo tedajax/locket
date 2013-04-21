@@ -27,4 +27,17 @@ function CRenderCircle:render()
 	love.graphics.circle("fill", self.position.x, self.position.y, self.radius)
 end
 
+function CPositionable:get_blank_data()
+	return { radius = 0 }
+end
+
+function CPositionable:get_data()
+	return { radius = self.radius }
+end
+
+function CPositionable:build(data)
+	self.radius = data.radius
+end
+
+
 ComponentFactory.get():register("CRenderCircle", function(...) return CRenderCircle(unpack(arg)) end)

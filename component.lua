@@ -16,9 +16,9 @@ function Component:req_start()
 	self:start()
 end
 
-function Component:req_update()
+function Component:req_update(dt)
 	if self.bEnabled then
-		self:update()
+		self:update(dt)
 	end
 end
 
@@ -32,7 +32,7 @@ function Component:start()
 
 end
 
-function Component:update()
+function Component:update(dt)
 
 end
 
@@ -41,6 +41,16 @@ function Component:render()
 end
 
 function Component:destroy()
+	
+end
+
+function Component:get_blank_data()
+	return {}
+end
+
+-- sets the component fields based on a data table
+-- useful for a simple 'prefab' system
+function Component:build(data)
 	
 end
 
