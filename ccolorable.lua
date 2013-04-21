@@ -27,4 +27,4 @@ function CColorable:build(data)
 	self.color = data.color
 end
 
-ComponentFactor.get():register("CColorable", function(...) return CColorable(unpack(arg)) end)
+ComponentFactory.get():register("CColorable", function(...) return CColorable(unpack(arg)) end)

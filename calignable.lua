@@ -10,8 +10,8 @@ CAlignable = Class
 
 		self.dependencies = { }
 
-		self.originName = "top left"
-		self.oldOriginName = self.originName
+		self.alignment = "top left"
+		self.oldAlignment = self.alignment
 		self.origin = Vector.zero
 	end
 }
@@ -20,50 +20,50 @@ function CAlignable:start()
 end
 
 function CAlignable:updateOrigin()
-	if self.originName == "top left" then
+	if self.alignment == "top left" then
 		self.origin = Vector(0, 0)
-	elseif self.originName == "top" then
+	elseif self.alignment == "top" then
 		self.origin = Vector(0.5, 0)
-	elseif self.originName == "top right" then
+	elseif self.alignment == "top right" then
 		self.origin = Vector(1, 0)
-	elseif self.originName == "left" then
+	elseif self.alignment == "left" then
 		self.origin = Vector(0, 0.5)
-	elseif self.originName == "center" then
+	elseif self.alignment == "center" then
 		self.origin = Vector(0.5, 0.5)
-	elseif self.originName == "right" then
+	elseif self.alignment == "right" then
 		self.origin = Vector(1, 0.5)
-	elseif self.originName == "bottom left" then
+	elseif self.alignment == "bottom left" then
 		self.origin = Vector(0, 1)
-	elseif self.originName == "bottom" then
+	elseif self.alignment == "bottom" then
 		self.origin = Vector(0.5, 1)
-	elseif self.originName == "bottom right" then
+	elseif self.alignment == "bottom right" then
 		self.origin = Vector(1, 1)
 	end
 end
 
 function CAlignable:update(dt)
-	if self.oldOriginName ~= self.originName then
+	if self.oldAlignment ~= self.alignment then
 		self:updateOrigin()
-		self.oldOriginName = self.originName
+		self.oldAlignment = self.alignment
 	end
 end
 
 function CAlignable:get_blank_data()
 	return {
-		originName = "top left",
+		alignment = "top left",
 		origin = Vector.zero
 	}
 end
 
 function CAlignable:get_data()
 	return {
-		originName = self.originName,
+		alignment = self.alignment,
 		origin = self.origin
 	}
 end
 
 function CAlignable:build(data)
-	self.originName = data.originName
+	self.alignment = data.alignment
 	self.origin = data.origin
 end
 
