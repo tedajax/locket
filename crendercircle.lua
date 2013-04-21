@@ -1,5 +1,4 @@
 Class = require 'hump.class'
-Signal = require 'hump.signal'
 Vector = require 'hump.vector'
 
 CRenderCircle = Class
@@ -27,15 +26,15 @@ function CRenderCircle:render()
 	love.graphics.circle("fill", self.position.x, self.position.y, self.radius)
 end
 
-function CPositionable:get_blank_data()
+function CRenderCircle:get_blank_data()
 	return { radius = 0 }
 end
 
-function CPositionable:get_data()
+function CRenderCircle:get_data()
 	return { radius = self.radius }
 end
 
-function CPositionable:build(data)
+function CRenderCircle:build(data)
 	self.radius = data.radius
 end
 
