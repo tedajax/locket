@@ -17,13 +17,12 @@ CRenderCircle = Class
 
 function CRenderCircle:start()
 	self.positionable = self:get_component("CPositionable")
-	print(self.positionable)
 	self.position = self.positionable.position --self:get_component("CPositionable").position
 end
 
 function CRenderCircle:render()
 	love.graphics.setColor(255, 0, 0, 255)
-	love.graphics.circle("fill", self.position.x, self.position.y, self.radius)
+	love.graphics.circle("fill", self.positionable.position.x, self.positionable.position.y, self.radius)
 end
 
 function CRenderCircle:get_blank_data()

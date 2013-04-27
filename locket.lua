@@ -10,4 +10,5 @@ require 'locket.ccolorable'
 require 'locket.cspriterenderer'
 require 'locket.crendercircle'
 require 'locket.cspinner'
+require 'locket.cgravity'
 
