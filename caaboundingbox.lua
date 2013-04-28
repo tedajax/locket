@@ -10,6 +10,9 @@ CAABoundingBox = Class
 
 		self.dependencies = { CPositionable = true, CAlignable = true}
 
+		self.layer = "default"
+		self.collidesWith = { default = true }
+
 		self.cells = nil
 		self.static = false
 		if staticObj ~= nil then self.static = staticObj end
@@ -86,8 +89,12 @@ function CAABoundingBox:on_collision_exit(collider)
 end
 
 function CAABoundingBox:collides(other)
-	return self:right() >= other:left() and self:left() <= other:right() and
-	   	   self:bottom() >= other:top() and self:top() <= other:bottom()
+	if self.collidesWith[other.layer] then
+		return self:right() >= other:left() and self:left() <= other:right() and
+	   		   self:bottom() >= other:top() and self:top() <= other:bottom()
+	else
+		return false
+	end
 end
 
 function CAABoundingBox:render()

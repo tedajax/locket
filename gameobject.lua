@@ -6,6 +6,7 @@ GameObject = Class
 	name = "GameObject",
 	function(self)
 		self.objName = 'GameObject'
+		self.tag = 'default'
 		self.signal = Signal.new()
 		self.components = {}
 		self.bEnabled = true
