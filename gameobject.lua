@@ -107,3 +107,9 @@ function GameObject:destroy()
 	Signal.remove('req_update', self.updateFunc)
 	Signal.remove('req_render', self.renderFunc)
 end
+
+function GameObject:send_message(msg, ...)
+	for cname, comp in pairs(self.components) do
+		comp:receive_message(msg, unpack(arg))
+	end
+end

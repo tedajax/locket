@@ -58,4 +58,14 @@ function Component:get_component(cname)
 	return self.gameObject:get_component(cname)
 end
 
+function Component:receive_message(msg, ...)
+	if self[msg] ~= nil and type(self[msg]) == "function" then
+		self[msg](self, unpack(arg))
+	end
+end
+
+function Component:send_message(msg, ...)
+	self.gameObject:send_message(msg, unpack(arg))
+end
+
 ComponentFactory.get():register("CBase", function(...) return Component(unpack(arg)) end)

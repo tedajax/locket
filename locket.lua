@@ -11,4 +11,6 @@ require 'locket.cspriterenderer'
 require 'locket.crendercircle'
 require 'locket.cspinner'
 require 'locket.cgravity'
+require 'locket.crenderbox'
+require 'locket.caaboundingbox'
 
