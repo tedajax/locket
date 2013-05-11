@@ -13,4 +13,4 @@ require 'locket.cspinner'
 require 'locket.cgravity'
 require 'locket.crenderbox'
 require 'locket.caaboundingbox'
-
+require 'locket.cplatformcollision'

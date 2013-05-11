@@ -12,6 +12,7 @@ CGravity = Class
 
 		self.gravity = grav or 98
 		self.velocity = Vector(0, 0)
+		self.onGround = false
 	end
 }
 
@@ -20,8 +21,12 @@ function CGravity:start()
 end
 
 function CGravity:update(dt)
-	self.velocity = self.velocity + Vector(0, self.gravity) * dt
-	self.positionable.position = self.positionable.position + self.velocity * dt
+	if self.onGround then
+		self.velocity = Vector.zero
+	else
+		self.velocity = self.velocity + Vector(0, self.gravity) * dt
+		self.positionable.position = self.positionable.position + self.velocity * dt
+	end
 end
 
 function CGravity:get_blank_data()

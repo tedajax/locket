@@ -11,7 +11,7 @@ CAABoundingBox = Class
 		self.dependencies = { CPositionable = true, CAlignable = true}
 
 		self.layer = "default"
-		self.collidesWith = { default = true }
+		self.collidesWith = { default = true, wall = true }
 
 		self.cells = nil
 		self.static = false
