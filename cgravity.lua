@@ -12,6 +12,7 @@ CGravity = Class
 
 		self.gravity = grav or 98
 		self.velocity = Vector(0, 0)
+		self.terminalVelocity = 1000
 		self.onGround = false
 	end
 }
@@ -25,6 +26,7 @@ function CGravity:update(dt)
 		self.velocity = Vector.zero
 	else
 		self.velocity = self.velocity + Vector(0, self.gravity) * dt
+		if self.velocity.y > self.terminalVelocity then self.velocity.y = self.terminalVelocity end
 		self.positionable.position = self.positionable.position + self.velocity * dt
 	end
 end

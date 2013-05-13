@@ -15,6 +15,7 @@ CAABoundingBox = Class
 
 		self.cells = nil
 		self.static = false
+		self.trigger = false
 		if staticObj ~= nil then self.static = staticObj end
 
 		self.width = 64
@@ -24,7 +25,7 @@ CAABoundingBox = Class
 		self.isColliding = false
 		self.collidingWith = {}
 
-		self.debugOn = true
+		self.debugOn = false
 	end
 }
 
@@ -57,6 +58,13 @@ function CAABoundingBox:bottom()
 	return self.positionable.position.y + self.height - oy
 end
 
+function CAABoundingBox:center()
+	local ox = self.alignable.origin.x * self.width
+	local oy = self.alignable.origin.y * self.height
+
+	return self.positionable.position - Vector(ox, oy)
+end
+
 function CAABoundingBox:topleft()
 	return Vector(self:left(), self:top())
 end
@@ -73,22 +81,45 @@ function CAABoundingBox:bottomright()
 	return Vector(self:right(), self:bottom())
 end
 
-function CAABoundingBox:on_collision_enter(collider)
+function CAABoundingBox:on_trigger_enter(collider)
 	self.collidingWith[collider] = true
 	self.collCount = self.collCount + 1
 	if self.collCount > 0 then self.isColliding = true end
 end
 
-function CAABoundingBox:on_collision_stay(collider)
+function CAABoundingBox:on_trigger_stay(collider)
 end
 
-function CAABoundingBox:on_collision_exit(collider)
+function CAABoundingBox:on_trigger_exit(collider)
 	self.collidingWith[collider] = false
 	self.collCount = self.collCount - 1
 	if self.collCount <= 0 then self.isColliding = false end
 end
 
+function CAABoundingBox:on_collision_enter(collision)
+	self:on_trigger_enter(collision.collider)
+end
+
+function CAABoundingBox:on_collision_stay(collision)
+end
+
+function CAABoundingBox:on_collision_exit(collision)
+	self:on_trigger_exit(collision.collider)
+end
+
 function CAABoundingBox:collides(other)
+	local diff = other:center() - self:center()
+	local normal = diff:normalized()
+
+	local collision = {}
+
+	collision.normal = normal
+	collision.collider = other
+
+	return collision
+end
+
+function CAABoundingBox:intersects(other)
 	if self.collidesWith[other.layer] then
 		return self:right() >= other:left() and self:left() <= other:right() and
 	   		   self:bottom() >= other:top() and self:top() <= other:bottom()
