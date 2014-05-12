@@ -10,7 +10,7 @@ CGravity = Class
 
 		self.dependencies = { CPositionable = true }
 
-		self.gravity = grav or 98
+		self.gravity = grav or 980
 		self.velocity = Vector(0, 0)
 		self.terminalVelocity = 1000
 		self.onGround = false
@@ -29,6 +29,12 @@ function CGravity:update(dt)
 		if self.velocity.y > self.terminalVelocity then self.velocity.y = self.terminalVelocity end
 		self.positionable.position = self.positionable.position + self.velocity * dt
 	end
+end
+
+function CGravity:hit_wall(side)
+	self.onGround = true
+	self.velocity = Vector.zero
+	print("gravity hit ground")
 end
 
 function CGravity:get_blank_data()

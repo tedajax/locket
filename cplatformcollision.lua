@@ -9,7 +9,7 @@ CPlatformCollision = Class
 	function(self, gameObj)
 		Component.construct(self, gameObj, false)
 
-		self.dependencies = { CAABoundingBox = true, CPlayerController = true }
+		self.dependencies = { CAABoundingBox = true }
 
 		self.groundBlocks = Set()
 	end
@@ -18,7 +18,7 @@ CPlatformCollision = Class
 function CPlatformCollision:start()
 	self.positionable = self:get_component("CPositionable")
 	self.collider = self:get_component("CAABoundingBox")
-	self.controller = self:get_component("CPlayerController")
+	self.controller = self:get_component("CPlayerController") or self:get_component("CGravity")
 end
 
 function CPlatformCollision:update(dt)
