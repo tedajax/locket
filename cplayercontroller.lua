@@ -10,15 +10,15 @@ CPlayerController = Class
 
 		self.dependencies = { CPositionable = true }
 
-		self.moveSpeed = 500
+		self.moveSpeed = 200
 		self.acceleration = 5000
 		self.velocity = Vector.zero
-		self.gravity = 300
+		self.gravity = 980
 		self.terminalVelocity = 1000
 		self.onGround = false
 		self.vertSpeed = 0
 
-		self.jumpSpeed = -500
+		self.jumpSpeed = -350
 		self.isJumping = false
 		self.pressJump = false
 	end
@@ -34,16 +34,13 @@ function CPlayerController:update(dt)
 	if love.keyboard.isDown("left") then moveDir = moveDir - 1 end
 	if love.keyboard.isDown("right") then moveDir = moveDir + 1 end
 
-	if moveDir == 0 then
-		if self.velocity.x < -10 then 
-			moveDir = 1 
-		elseif self.velocity.x > 10 then
-			moveDir = -1 
-		end
-	end
-
 	self.velocity = self.velocity + Vector(moveDir * self.acceleration * dt, 0.0)
 	self.velocity:clamp(Vector(-self.moveSpeed, 0), Vector(self.moveSpeed, 0))
+
+	if moveDir == 0 then
+		self.velocity.x = self.velocity.x * 0.9
+	end
+
 	if math.abs(self.velocity.x) < 10 then self.velocity.x = 0 end
 
 	if not self.onGround then
@@ -68,6 +65,22 @@ function CPlayerController:update(dt)
 
 	self.velocity.y = self.vertSpeed
 	self.positionable.position = self.positionable.position + self.velocity * dt
+end
+
+function CPlayerController:hit_wall(side)
+	if side == "top" then
+		self.onGround = true
+	elseif side == "right" then
+		if self.velocity.x > 0 then
+			self.velocity.x = 0
+		end
+	elseif side == "left" then
+		if self.velocity.x < 0 then
+			self.velocity.x = 0
+		end
+	elseif side == "bottom" then
+		self.vertSpeed = 0
+	end
 end
 
 function CPlayerController:get_blank_data()

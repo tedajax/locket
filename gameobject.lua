@@ -13,6 +13,7 @@ GameObject = Class
 
 		self.startFunc = Signal.register('req_start', function() self:req_start() end)
 		self.updateFunc = Signal.register('req_update', function() self:req_update() end)
+		self.lateUpdateFunc = Signal.register('req_late_update', function() self:req_late_update() end)
 		self.renderFunc = Signal.register('req_render', function() self:req_render() end)
 	end
 }
@@ -24,6 +25,12 @@ end
 function GameObject:req_update(dt)
 	if self.bEnabled then
 		self:update(dt)
+	end
+end
+
+function GameObject:req_late_update(dt)
+	if self.bEnabled then
+		self:late_update(dt)
 	end
 end
 
@@ -42,6 +49,12 @@ end
 function GameObject:update(dt)
 	for cname, comp in pairs(self.components) do
 		comp:req_update(dt)
+	end
+end
+
+function GameObject:late_update(dt)
+	for cname, comp in pairs(self.components) do
+		comp:req_late_update(dt)
 	end
 end
 

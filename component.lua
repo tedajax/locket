@@ -22,6 +22,12 @@ function Component:req_update(dt)
 	end
 end
 
+function Component:req_late_update(dt)
+	if self.bEnabled then
+		self:late_update(dt)
+	end
+end
+
 function Component:req_render()
 	if self.bEnabled then
 		self:render()
@@ -33,6 +39,10 @@ function Component:start()
 end
 
 function Component:update(dt)
+
+end
+
+function Component:late_update(dt)
 
 end
 

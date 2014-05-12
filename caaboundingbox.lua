@@ -1,6 +1,9 @@
 Class = require 'hump.class'
 Vector = require 'hump.vector'
 
+local max = math.max
+local min = math.min
+
 CAABoundingBox = Class
 {
 	name = "CAABoundingBox",
@@ -18,8 +21,10 @@ CAABoundingBox = Class
 		self.trigger = false
 		if staticObj ~= nil then self.static = staticObj end
 
-		self.width = 64
-		self.height = 64
+		self.lastPosition = Vector(0, 0)
+
+		self.width = 16
+		self.height = 16
 
 		self.collCount = 0
 		self.isColliding = false
@@ -117,6 +122,25 @@ function CAABoundingBox:collides(other)
 	collision.collider = other
 
 	return collision
+end
+
+function CAABoundingBox:intersect_side(other, tolerance)
+	tolerance = 16 -- REMOVE THIS LATER THIS IS FOR TESTING
+
+	local diff = self.positionable.position - other.positionable.position
+	local norm = diff:normalized()
+
+	local angle = math.atan2(norm.y, norm.x) * 180 / math.pi + 180
+
+	if angle >= 45 and angle < 135 then
+		return "top"
+	elseif angle >= 135 and angle < 225 then
+		return "right"
+	elseif angle >= 225 and angle < 315 then
+		return "bottom"
+	else
+		return "left"
+	end
 end
 
 function CAABoundingBox:intersects(other)

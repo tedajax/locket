@@ -24,31 +24,52 @@ end
 function CPlatformCollision:update(dt)
 end
 
-function CPlatformCollision:on_collision_enter(collision)
+function CPlatformCollision:resolve_collision(collision)
 	local x, y = self.positionable.position.x, self.positionable.position.y
 	local collider = collision.collider
 
-	self.groundBlocks:add(collider)
-	y = collider.positionable.position.y - (collider.height / 2 + self.collider.height / 2)
+	local side = self.collider:intersect_side(collider)
 
-	self.positionable.position = Vector(x, y)
+	local width = (collider.width / 2) + (self.collider.width / 2)
+	local height = (collider.height / 2) + (self.collider.height / 2)
 
-	if self.groundBlocks.size > 0 then
-		self.controller.onGround = true
+	local cx = collider.positionable.position.x
+	local cy = collider.positionable.position.y
+
+	if side == "top" then
+		y = cy - height
+	elseif side == "bottom" then
+		y = cy + height
+	elseif side == "left" then
+		x = cx - width - 1
+	elseif side == "right" then
+		x = cx + width + 1
+	end
+
+	self.positionable.position.x = x
+	self.positionable.position.y = y
+
+	return side
+end
+
+function CPlatformCollision:on_collision_enter(collision)	
+	local side = self:resolve_collision(collision)
+	self.controller:hit_wall(side)
+
+	if side == "top" then
+		self.groundBlocks:add(collision.collider)
 	end
 end
 
 function CPlatformCollision:on_collision_stay(collision)
-	local collider = collision.collider
-	local x = self.positionable.position.x
-	local y = collider.positionable.position.y - (collider.height / 2 + self.collider.height / 2)
-	self.positionable.position = Vector(x, y)
-	self.controller.onGround = true
+	local side = self:resolve_collision(collision)
 end
 
 function CPlatformCollision:on_collision_exit(collision)
 	local collider = collision.collider
-	self.groundBlocks:remove(collider)
+	if self.groundBlocks:contains(collider) then
+		self.groundBlocks:remove(collider)
+	end
 	if self.groundBlocks.size == 0 then
 		self.controller.onGround = false
 	end
