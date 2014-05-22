@@ -22,6 +22,12 @@ function GameObject:req_start()
 	self:start()
 end
 
+function GameObject:req_pre_update(dt)
+	if self.bEnabled then
+		self:pre_update(dt)
+	end
+end
+
 function GameObject:req_update(dt)
 	if self.bEnabled then
 		self:update(dt)
@@ -43,6 +49,12 @@ end
 function GameObject:start()
 	for cname, comp in pairs(self.components) do
 		comp:req_start()
+	end
+end
+
+function GameObject:pre_update(dt)
+	for cname, comp in pairs(self.components) do
+		comp:req_pre_update(dt)
 	end
 end
 

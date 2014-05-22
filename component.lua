@@ -16,6 +16,12 @@ function Component:req_start()
 	self:start()
 end
 
+function Component:req_pre_update(dt)
+	if self.bEnabled then
+		self:pre_update(dt)
+	end
+end
+
 function Component:req_update(dt)
 	if self.bEnabled then
 		self:update(dt)
@@ -36,6 +42,9 @@ end
 
 function Component:start()
 
+end
+
+function Component:pre_update(dt)
 end
 
 function Component:update(dt)
