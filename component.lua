@@ -28,9 +28,9 @@ function Component:req_update(dt)
 	end
 end
 
-function Component:req_late_update(dt)
+function Component:req_post_update(dt)
 	if self.bEnabled then
-		self:late_update(dt)
+		self:post_update(dt)
 	end
 end
 
@@ -51,7 +51,7 @@ function Component:update(dt)
 
 end
 
-function Component:late_update(dt)
+function Component:post_update(dt)
 
 end
 

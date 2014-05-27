@@ -34,9 +34,9 @@ function GameObject:req_update(dt)
 	end
 end
 
-function GameObject:req_late_update(dt)
+function GameObject:req_post_update(dt)
 	if self.bEnabled then
-		self:late_update(dt)
+		self:post_update(dt)
 	end
 end
 
@@ -64,9 +64,9 @@ function GameObject:update(dt)
 	end
 end
 
-function GameObject:late_update(dt)
+function GameObject:post_update(dt)
 	for cname, comp in pairs(self.components) do
-		comp:req_late_update(dt)
+		comp:req_post_update(dt)
 	end
 end
 
